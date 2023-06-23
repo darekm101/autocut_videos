@@ -7,17 +7,23 @@ def generate_video_cuts(configs):
     print(f"Processing video files in directory: {configs['source_video_files']}")
     print(f"Processing audio meta files in directory: {configs['temp_audio_configs']}")
 
-    # Create a list of sorted video files
-    video_files = sorted(glob.glob(os.path.join(configs['source_video_files'], '*')))
+    min_clip_duration = configs.get('minimum_clip_duration', 2)
+
+    # List all files in the directory
+    all_files = glob.glob(os.path.join(configs['source_video_files'], '*'))
+
+    # Filter for .mp4 and .mov files only
+    video_files = [f for f in all_files if f.lower().endswith(('.mp4', '.mov'))]
+    video_files.sort()  # Sort the video files
+
     print(f"Sorted video files: {video_files}")
 
     audio_meta_files = [f for f in os.listdir(configs['temp_audio_configs']) if f.endswith(".json")]
     print(f"Audio meta files: {audio_meta_files}")
 
-    total_duration = 0  # Initialize total duration counter
+    total_duration = 0
 
     print(f"audio_meta_files: {audio_meta_files}")
-
 
     for file_name in audio_meta_files:
         audio_meta_path = os.path.join(configs['temp_audio_configs'], file_name)
@@ -29,12 +35,17 @@ def generate_video_cuts(configs):
             # Create a new list to hold the updated json data
             new_json_data = []
 
-            # Assign video filename to each audio beat
             for i in range(min(len(json_data), len(video_files))):
-                json_data[i]["source_video"] = video_files[i]
-                total_duration += json_data[i]["duration_from_last"]
-                print(f"Assigning source video {video_files[i]} to sequence number {json_data[i]['sequence_number']}")
-                new_json_data.append(json_data[i])
+                if json_data[i]["video_cut_point"] == True:
+
+                    json_data[i]["duration_from_last_video_cut_point"] *= min_clip_duration
+                    
+                    json_data[i]["source_video"] = video_files[i]
+                    total_duration += json_data[i]["duration_from_last_video_cut_point"]
+                    print(f"Assigning source video {video_files[i]} to sequence number {json_data[i]['video_sequence_id']}")
+                    new_json_data.append(json_data[i])
+                else: 
+                    continue
 
             trailer_file_name = os.path.splitext(file_name)[0] + "-trailer.json"
             trailer_path = os.path.join(configs['temp_video_configs'], trailer_file_name)

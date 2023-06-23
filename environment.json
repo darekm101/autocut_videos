@@ -1,5 +1,6 @@
 {
-    "source_video_files": "source_videos", 
+    "source_video_files": "/Users/darekm101/Documents/_Move_To_External/2023-05-Utah/DJI-Day1/DCIM/DJI_001", 
+    "minimum_clip_duration": 2, 
     "source_audio_files": "source_audios", 
     "temp_directory": "temp", 
     "temp_audio_configs": "temp/audio_configs",
