@@ -5,10 +5,10 @@ import json
 def generate_beats(configs):
     os.makedirs(configs['temp_audio_configs'], exist_ok=True)
 
-    audio_files = [f for f in os.listdir(configs["audio_files"]) if f.endswith(".wav") or f.endswith(".mp3")]
+    audio_files = [f for f in os.listdir(configs["source_audio_files"]) if f.endswith(".wav") or f.endswith(".mp3")]
 
     for file_name in audio_files:
-        audio_path = os.path.join(configs['audio_files'], file_name)
+        audio_path = os.path.join(configs['source_audio_files'], file_name)
         y, sr = librosa.load(audio_path)
 
         tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)

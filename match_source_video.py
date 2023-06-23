@@ -4,20 +4,20 @@ import glob
 
 def generate_video_cuts(configs):
     print(f"generate_video_cuts()")
-    print(f"Processing video files in directory: {configs['video_files']}")
+    print(f"Processing video files in directory: {configs['source_video_files']}")
     print(f"Processing audio meta files in directory: {configs['temp_audio_configs']}")
 
     # Create a list of sorted video files
-    video_files = sorted(glob.glob(os.path.join(video_directory, '*')))
+    video_files = sorted(glob.glob(os.path.join(configs['source_video_files'], '*')))
     print(f"Sorted video files: {video_files}")
 
-    audio_meta_files = [f for f in os.listdir(audio_meta_directory) if f.endswith("-beats.json")]
+    audio_meta_files = [f for f in os.listdir(configs['temp_audio_configs']) if f.endswith("-beats.json")]
     print(f"Audio meta files: {audio_meta_files}")
 
     total_duration = 0  # Initialize total duration counter
 
     for file_name in audio_meta_files:
-        audio_meta_path = os.path.join(audio_meta_directory, file_name)
+        audio_meta_path = os.path.join(configs['temp_audio_configs'], file_name)
 
         with open(audio_meta_path, "r") as json_file:
             json_data = json.load(json_file)
@@ -34,7 +34,7 @@ def generate_video_cuts(configs):
                 new_json_data.append(json_data[i])
 
             trailer_file_name = os.path.splitext(file_name)[0] + "-trailer.json"
-            trailer_path = os.path.join(temp_configs_directory, trailer_file_name)
+            trailer_path = os.path.join(configs['temp_video_configs'], trailer_file_name)
 
             os.makedirs(os.path.dirname(trailer_path), exist_ok=True)
 
