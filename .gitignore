@@ -3,6 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# My Media files
+*.mp3
+*.MP3
+*.mp4
+*.MP4
+*.mov
+*.MOV
+
+
+
 # C extensions
 *.so
 
