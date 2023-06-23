@@ -1,5 +1,12 @@
+echo "running ls" 
 ls
+echo "running cat environment.json"
 cat environment.json
+echo "running cat create_trailer.py"
 cat create_trailer.py
+echo "running cat get_beats.py"
 cat get_beats.py
-cat match_beats.py
+echo "running cat match_source_video.py"
+cat match_source_video.py
+cat ./temp/video_configs/fibonacci-adrian-disch-musicbed-beats-trailer.json 
+cat combine_clips.py

@@ -24,7 +24,7 @@ def generate_beats(configs):
             })
             sequence_number += 1
 
-        json_path = os.path.join(configs['temp_audio_configs'], f'{file_name.split(".")[0]}-beats.json')
+        json_path = os.path.join(configs['temp_audio_configs'], f'{file_name.split(".")[0]}.json')
 
         with open(json_path, "w") as json_file:
             json.dump(json_data, json_file, indent=4)

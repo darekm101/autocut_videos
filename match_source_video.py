@@ -11,10 +11,13 @@ def generate_video_cuts(configs):
     video_files = sorted(glob.glob(os.path.join(configs['source_video_files'], '*')))
     print(f"Sorted video files: {video_files}")
 
-    audio_meta_files = [f for f in os.listdir(configs['temp_audio_configs']) if f.endswith("-beats.json")]
+    audio_meta_files = [f for f in os.listdir(configs['temp_audio_configs']) if f.endswith(".json")]
     print(f"Audio meta files: {audio_meta_files}")
 
     total_duration = 0  # Initialize total duration counter
+
+    print(f"audio_meta_files: {audio_meta_files}")
+
 
     for file_name in audio_meta_files:
         audio_meta_path = os.path.join(configs['temp_audio_configs'], file_name)
@@ -38,10 +41,19 @@ def generate_video_cuts(configs):
 
             os.makedirs(os.path.dirname(trailer_path), exist_ok=True)
 
+            # Get source audio file name
+            source_audio_file = os.path.splitext(file_name)[0] + ".mp3"
+
             with open(trailer_path, "w") as trailer_file:
                 trailer_meta = {
                     "trailer_duration": total_duration,
+                    "source_audio_file": source_audio_file,  # Add source audio filename to trailer metadata
                     "clips": new_json_data
                 }
                 json.dump(trailer_meta, trailer_file, indent=4)
                 print(f"Generated trailer JSON file: {trailer_path}")
+
+if __name__ == "__main__":
+    import read_configs
+    configs = read_configs.read_environment()
+    generate_video_cuts(configs)
