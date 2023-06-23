@@ -10,7 +10,8 @@ def generate_video_cuts(configs):
     min_clip_duration = configs.get('minimum_clip_duration', 2)
 
     # List all files in the directory
-    all_files = glob.glob(os.path.join(configs['source_video_files'], '*'))
+    # all_files = glob.glob(os.path.join(configs['source_video_files'], '*'))
+    all_files = glob.glob(os.path.join(configs['source_video_files'], '**', '*'), recursive=True)
 
     # Filter for .mp4 and .mov files only
     video_files = [f for f in all_files if f.lower().endswith(('.mp4', '.mov'))]
