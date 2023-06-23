@@ -5,7 +5,7 @@
     "temp_directory": "temp", 
     "temp_audio_configs": "temp/audio_configs",
     "temp_video_configs": "temp/video_configs",
-    "temp_videos": "temp/videos",
-    "temp_audios": "temp/audios",
+    "temp_videos": "temp/source_trimmed_videos",
+    "temp_audios": "temp/source_trimmed_audios",
     "output_directory": "output"
 }

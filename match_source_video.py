@@ -35,8 +35,9 @@ def generate_video_cuts(configs):
             # Create a new list to hold the updated json data
             new_json_data = []
 
+            
             for i in range(min(len(json_data), len(video_files))):
-                if json_data[i]["video_cut_point"] == True:
+                if json_data[i]["video_cut_point"] == True: 
 
                     json_data[i]["duration_from_last_video_cut_point"] *= min_clip_duration
                     

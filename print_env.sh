@@ -8,5 +8,3 @@ echo "running cat get_beats.py"
 cat get_beats.py
 echo "running cat match_source_video.py"
 cat match_source_video.py
-cat ./temp/video_configs/fibonacci-adrian-disch-musicbed-beats-trailer.json 
-cat combine_clips.py
