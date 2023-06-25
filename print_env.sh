@@ -8,3 +8,6 @@ echo "running cat get_beats.py"
 cat get_beats.py
 echo "running cat match_source_video.py"
 cat match_source_video.py
+cat trim_audio.py
+cat cut_video_clips.py
+cat combine_clips.py
