@@ -4,7 +4,13 @@ import subprocess
 import tempfile
 
 def combine_clips(configs):
-    print("Combine_clips()")
+
+    line_break = "*" * 50
+    print(f"Running combine_clips(){line_break}")
+
+    # Ensure the output directory exists
+    output_directory = configs["output_directory"]
+    os.makedirs(output_directory, exist_ok=True)
 
     # Location of video configurations
     video_configs_directory = configs["temp_video_configs"]

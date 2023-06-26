@@ -7,7 +7,6 @@ def generate_beats(configs):
 
     audio_files = [f for f in os.listdir(configs["source_audio_files"]) if f.endswith(".wav") or f.endswith(".mp3")]
 
-    # Fetch minimum clip duration from config
     min_clip_duration = configs.get('minimum_clip_duration', 2)
 
     for file_name in audio_files:
@@ -21,8 +20,12 @@ def generate_beats(configs):
         video_clip_duration = 0
         video_sequence_id = 1
 
-        for i in range(1, len(beat_frames)):
-            duration_from_last = librosa.frames_to_time(beat_frames[i] - beat_frames[i - 1], sr=sr)
+        for i in range(len(beat_frames)):
+            if i == 0:
+                duration_from_last = librosa.frames_to_time(beat_frames[i], sr=sr)
+            else:
+                duration_from_last = librosa.frames_to_time(beat_frames[i] - beat_frames[i - 1], sr=sr)
+
             video_clip_duration += duration_from_last
 
             item = {
@@ -49,4 +52,3 @@ def generate_beats(configs):
             json.dump(json_data, json_file, indent=4)
 
         print(f"Generated JSON file: {json_path}")
-

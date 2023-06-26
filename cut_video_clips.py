@@ -35,11 +35,21 @@ def cut_video_clips(configs):
                 output_file = os.path.join(configs['temp_videos'], f"{os.path.basename(source_video)}-clip-{i}.mp4")
                 clip['source_trimmed_video'] = output_file
 
-                # ffmpeg command to cut video without transcoding
-                command = [
-                    'ffmpeg', '-y', '-i', source_video, '-ss', str(start_time), '-t', str(duration),
-                    '-c', 'copy', output_file
-                ]
+                # ffmpeg command to cut video without transcoding, causes jitter in video
+                # command = [
+                #     'ffmpeg', '-y', '-i', source_video, '-ss', str(start_time), '-t', str(duration),
+                #     '-c', 'copy', output_file
+                # ]
+
+
+                # ffmpeg command to cut video with transcoding, longer processing time
+                # command = [
+                #     'ffmpeg', '-y', '-i', source_video, '-ss', str(start_time), '-t', str(duration),
+                #     '-c:v', 'libx264', '-c:a', 'aac', output_file
+                # ]
+
+                command = ['ffmpeg', '-y', '-ss', str(start_time), '-i', source_video, '-ss', '0', '-t', str(duration), '-c', 'copy', output_file]
+
                 
                 # Run ffmpeg command
                 subprocess.run(command, check=True)

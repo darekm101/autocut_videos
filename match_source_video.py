@@ -15,6 +15,8 @@ def generate_video_cuts(configs):
     video_files.sort()  
 
     print(f"Sorted video files: {video_files}")
+    print(f"Number of video files: {len(video_files)}")
+
 
     audio_meta_files = [f for f in os.listdir(configs['temp_audio_configs']) if f.endswith(".json")]
     print(f"Audio meta files: {audio_meta_files}")
