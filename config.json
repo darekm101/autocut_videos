@@ -4,7 +4,7 @@
     "source_audio_files": "source/audio",
     "initial_cutlist": "temp/initial_cutlist.json",
     "movie_config": "temp/movie.json",
-    "minimum_clip_duration": 5, 
+    "minimum_clip_duration": 3, 
     "temp_directory": "temp", 
     "output_combined_audio": "temp/combined_audio",
     "output_initial_cuts": "temp/cut_list",

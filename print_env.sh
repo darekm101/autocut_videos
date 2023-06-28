@@ -14,4 +14,18 @@ echo "Next is combine_audio.py, here are the contents"
 cat combine_audio.py
 echo "Next is make_initial_cutlist.py, here are the contents"
 cat make_initial_cutlist.py
+echo "Next is make_movie_json.py, here are the contents"
+cat make_movie_json.py
+echo "Next is match_clips_to_cuts.py, here are the contents"
+cat match_clips_to_cuts.py
+echo "Next is cut_video_clips.py, here are the contents"
+cat cut_video_clips.py
+echo "Next is render_movie.py, here are the contents"
+cat render_movie.py
+echo "Next is math_media_duration.py, here are the contents"
+cat match_media_duration.py
+
+
+
+
 

@@ -6,6 +6,8 @@ import make_video_json
 import match_clips_to_cuts
 import cut_video_clips
 import render_movie
+import match_media_duration
+import combine_media
 
 
 config = read_config.read_json()
@@ -15,12 +17,6 @@ make_video_json.write_json(config)
 match_clips_to_cuts.assign_clips(config)
 cut_video_clips.cut_video_clips(config)
 render_movie.combine_all(config)
+match_media_duration.synch_audio_video(config)
+combine_media.add_audio_to_video(config)
 
-
-
-# print(f"Read configs: {configs}")
-# get_audio_meta.get_audio_meta(configs)
-# match_source_video.generate_video_cuts(configs)
-# cut_video_clips.cut_video_clips(configs)
-# trim_audio.trim_audio(configs)
-# combine_clips.combine_clips(configs)
