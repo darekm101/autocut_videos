@@ -15,4 +15,3 @@ cat combine_audio.py
 echo "Next is make_initial_cutlist.py, here are the contents"
 cat make_initial_cutlist.py
 
-
