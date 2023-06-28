@@ -1,7 +1,8 @@
 {
     "final_movie_title": "2023-06-Washington",
     "source_video_files": "/Users/darekm101/Documents/_Move_To_External/2023-06-Washington-Video", 
-    "source_audio_files": "source/audio", 
+    "source_audio_files": "source/audio",
+    "initial_cutlist": "temp/initial_cutlist.json",
     "minimum_clip_duration": 5, 
     "temp_directory": "temp", 
     "output_combined_audio": "temp/combined_audio",

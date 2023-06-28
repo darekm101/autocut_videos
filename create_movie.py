@@ -1,12 +1,12 @@
 import os
 import read_config
-import combine_audio as combine_audio
+import combine_audio
+import make_initial_cutlist
 
 
 config = read_config.read_json()
 combine_audio.combine_audio(config)
-
-
+make_initial_cutlist.write_json(config)
 
 
 
