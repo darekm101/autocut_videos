@@ -24,8 +24,8 @@ echo "Next is render_movie.py, here are the contents"
 cat render_movie.py
 echo "Next is math_media_duration.py, here are the contents"
 cat match_media_duration.py
-echo "Next is combine_clips.py, here are the contents"
-cat combine_clips.py
+echo "Next is combine_media.py, here are the contents"
+cat combine_media.py
 
 
 

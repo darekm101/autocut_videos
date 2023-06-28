@@ -16,7 +16,7 @@ def add_audio_to_video(config):
     print(f"output_file: {output_file}")
 
     # Use ffmpeg to combine the audio and video files
-    command = f"ffmpeg -i {video_file} -i {audio_file} -c copy -shortest {output_file}"
+    command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac -strict experimental {output_file}"
     ffmpeg_output = subprocess.run(command, shell=True)
 
     # Check the return code of FFmpeg command
@@ -29,3 +29,4 @@ if __name__ == '__main__':
     import read_config
     config = read_config.read_json()
     add_audio_to_video(config)
+
