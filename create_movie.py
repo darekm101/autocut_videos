@@ -5,6 +5,7 @@ import make_initial_cutlist
 import make_video_json
 import match_clips_to_cuts
 import cut_video_clips
+import render_movie
 
 
 config = read_config.read_json()
@@ -13,6 +14,7 @@ make_initial_cutlist.write_json(config)
 make_video_json.write_json(config)
 match_clips_to_cuts.assign_clips(config)
 cut_video_clips.cut_video_clips(config)
+render_movie.combine_all(config)
 
 
 
