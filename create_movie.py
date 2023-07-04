@@ -20,6 +20,8 @@ cut_video_clips.cut_video_clips(config)
 render_movie.combine_all(config)
 if config['apply_curves']:
     apply_curves.apply_curves(config)
+if config['add_logo']: 
+    apply_logo.run(config)
 match_media_duration.synch_audio_video(config)
 combine_media.add_audio_to_video(config)
 
