@@ -26,7 +26,7 @@ def combine_all(config):
                 trimmed_video = clip['source_trimmed_video']
                 file.write(f"file '{trimmed_video}'\n")
             except KeyError:
-                print("source_trimmed_video not found in movie_config_data. Skipping this clip.")
+                print(f"source_trimmed_video not found in movie_config_data. Skipping this clip. {clip}")
                 continue
 
     # Output file
