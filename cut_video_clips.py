@@ -19,6 +19,7 @@ def cut_video_clips(config):
         try:
             source_video = clip['source_video']
             duration = clip['clip_duration']
+            start_time = clip['clip_starttime']
         except KeyError as e:
             print(f"Skipping clip {idx} due to missing key: {e}")
             continue
@@ -35,8 +36,8 @@ def cut_video_clips(config):
         # ffmpeg command to cut video without transcodeing, but can cause jitter in video
         output_file = os.path.join(temp_videos_directory, f"{os.path.basename(source_video)}-clip-{idx}.mp4")
         clip['source_trimmed_video'] = output_file
-        command = ['ffmpeg', '-y', '-ss', '0', '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
-
+        # command = ['ffmpeg', '-y', '-ss', '0', '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
+        command = ['ffmpeg', '-y', '-ss', start_time, '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
         # Run ffmpeg command
         subprocess.run(command, check=True)
 

@@ -53,6 +53,8 @@ def get_random_start_time(clip, min_clip_duration):
     return formatted_start_time
 
 
+
+
 def assign_clips(config):
     print(f"________ MODULE: match_clips_to_cuts.py - assign_clips() ___________")
     min_clip_duration = config["minimum_clip_duration"]
