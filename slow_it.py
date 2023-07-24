@@ -1,85 +1,55 @@
-import argparse
-import subprocess
-import json
 import os
-import fnmatch
-from pathlib import Path
-from datetime import datetime
-import re
+import sys
+import glob
+import subprocess
 
-def probe_file(file):
-    command = ["ffprobe", "-loglevel", "quiet", "-print_format", "json", "-show_format", "-show_streams", "-i", file]
-    output = subprocess.run(command, capture_output=True, text=True).stdout
-    return json.loads(output)
+input_dir = sys.argv[1]
+output_dir = sys.argv[2]
 
-def get_metadata_creation_time(metadata):
-    if 'tags' in metadata:
-        tags = metadata['tags']
-        if 'creation_time' in tags:
-            creation_time_str = tags['creation_time']
-            # Example: '2020-06-12T19:20:14.000000Z'
-            dt = datetime.strptime(creation_time_str, '%Y-%m-%dT%H:%M:%S.%fZ')
-            timestamp = dt.timestamp()
-            return timestamp
-    return None
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+    print(f"Created output directory: {output_dir}")
 
-def find_files(directory, pattern):
-    for path in Path(directory).rglob('*'):
-        if fnmatch.fnmatchcase(path.name, pattern):
-            yield str(path)
+for root, dirs, files in os.walk(input_dir):
+    for file in files:
+        if file.lower().endswith('.mp4'):
+            input_file = os.path.join(root, file)
+            print(f"Processing input file: {input_file}")
 
-parser = argparse.ArgumentParser(description='Slow down video files.')
-parser.add_argument('--input-dir', type=str, help='Input directory', required=True)
-parser.add_argument('--output-dir', type=str, help='Output directory', default='output')
-args = parser.parse_args()
+            base_file_name = os.path.basename(input_file).split(".")[0]
+            relative_path = os.path.relpath(root, input_dir)
+            output_sub_dir = os.path.join(output_dir, relative_path)
 
-input_dir = args.input_dir
-output_dir = args.output_dir
+            if not os.path.exists(output_sub_dir):
+                os.makedirs(output_sub_dir)
+                print(f"Created output subdirectory: {output_sub_dir}")
 
-# Ensure output directory exists
-os.makedirs(output_dir, exist_ok=True)
+            output_file = os.path.join(output_sub_dir, f"{base_file_name}_output.mp4")
+            print(f"Set output file path to: {output_file}")
 
-# Supported movie file extensions
-extensions = ('*.mp4', '*.MP4', '*.mkv', '*.MKV', '*.avi', '*.AVI', '*.mov', '*.MOV', '*.flv', '*.FLV')
+            raw_file = os.path.join(output_sub_dir, f"{base_file_name}_raw.h265")
 
-for extension in extensions:
-    for input_file in find_files(input_dir, extension):
-        print("Processing file:", input_file)
+            try:
+                command = [
+                    'ffmpeg', '-i', input_file, 
+                    '-map', '0:0', '-c:v', 'copy', '-bsf:v', 'hevc_mp4toannexb', 
+                    raw_file
+                ]
+                subprocess.run(command, check=True)
+                print("Converted video to raw bitstream format")
 
-        output_file = os.path.join(output_dir, os.path.basename(input_file))
-        
-        probe_data = probe_file(input_file)
-        video_streams = [stream for stream in probe_data['streams'] if stream['codec_type'] == 'video']
+                command = [
+                    'ffmpeg', '-fflags', '+genpts', '-r', '30', 
+                    '-i', raw_file, '-c:v', 'copy', '-tag:v', 'hvc1',
+                    output_file
+                ]
+                subprocess.run(command, check=True)
+                print("Generated new timestamps and muxed to container")
 
-        if video_streams:
-            video_stream = video_streams[0]
-            codec_name = video_stream.get('codec_name')
-            print("Video codec:", codec_name)
+                os.remove(raw_file)
+                print("Deleted raw file")
+            except subprocess.CalledProcessError as e:
+                print(f"Error processing file {input_file}: {e}")
+                continue
 
-            pix_fmt = video_stream.get('pix_fmt')
-            print("Pixel format:", pix_fmt)
-
-            bit_rate = video_stream.get('bit_rate')
-            print("Bit rate:", bit_rate)
-            
-            # Retrieve the original frame rate
-            r_frame_rate = video_stream.get('avg_frame_rate')
-            frame_rate = eval(r_frame_rate) # r_frame_rate is a string like '24000/1001', this will calculate it to a float
-            new_frame_rate = frame_rate / 2 # Halve the frame rate
-
-            # Copy over the metadata creation_time
-            orig_creation_timestamp = get_metadata_creation_time(probe_data['format'])
-            if orig_creation_timestamp is not None:
-                command = f'ffmpeg -i {input_file} -filter:v "setpts=2.0*PTS" -r {new_frame_rate} -c:v {codec_name} -tag:v hvc1 -pix_fmt {pix_fmt} -b:v {bit_rate} -map_metadata 0 -metadata creation_time={datetime.utcfromtimestamp(orig_creation_timestamp).isoformat()} {output_file}'
-            else:
-                command = f'ffmpeg -i {input_file} -filter:v "setpts=2.0*PTS" -r {new_frame_rate} -c:v {codec_name} -tag:v hvc1 -pix_fmt {pix_fmt} -b:v {bit_rate} -map_metadata 0 {output_file}'
-
-            subprocess.call(command, shell=True)
-
-            print(f"Slowed down the video by reducing the frame rate from {frame_rate} to {new_frame_rate}.")
-            print("Saved slowed down video file.")
-        else:
-            print(f"No video streams found in {input_file}.")
-
-print("All files have been processed!")
-
+print("Video processing completed.")
