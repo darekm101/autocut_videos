@@ -38,8 +38,17 @@ def cut_video_clips(config):
         clip['source_trimmed_video'] = output_file
         # command = ['ffmpeg', '-y', '-ss', '0', '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
         command = ['ffmpeg', '-y', '-ss', start_time, '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
-        # Run ffmpeg command
-        subprocess.run(command, check=True)
+        # # Run ffmpeg command
+        # subprocess.run(command, check=True)
+
+        #Code from Claude
+        try:
+            subprocess.run(command, check=True)
+        except Exception as e:
+            print(f"ERROR::Skipping File {source_video} due to error: {e}")
+            continue
+
+
 
     # Overwrite the movie config file with updated data
     with open(movie_config, 'w') as json_file:
