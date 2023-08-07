@@ -19,11 +19,16 @@ def validate_video_files(video_files, min_clip_duration):
     print(f"________ MODULE: match_clips_to_cuts.py - validate_video_files() ___________")
     valid_video_files = []
     for video_file in video_files:
-        video_duration = get_video_duration(video_file)
-        if video_duration < min_clip_duration:
-            print(f"Skipping video {video_file} because it is shorter {video_duration} than minimum clip duration {min_clip_duration}")
-        else:
-            valid_video_files.append(video_file)
+        try:
+            video_duration = get_video_duration(video_file)
+            if video_duration < min_clip_duration:
+                print(f"Skipping video {video_file} because it is shorter {video_duration} than minimum clip duration {min_clip_duration}")
+            else:
+                valid_video_files.append(video_file)
+        except:
+            print(f"Skipping video {video_file} because it is not a valid video file")
+            continue
+
     print(f"validate_video_files(): Remaining valid clips: {len(valid_video_files)}")
     return valid_video_files
 
