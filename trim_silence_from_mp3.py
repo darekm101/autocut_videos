@@ -18,8 +18,8 @@ for dirpath, dirnames, filenames in os.walk(input_dir):
         audio = AudioSegment.from_mp3(full_path)
         print("Loaded audio file.")
 
-        trimmed_audio = audio.strip_silence(silence_thresh=-30, padding=100)
-        print("Trimmed silence from audio file with silence threshold -30 dBFS and padding of 100 ms.")
+        trimmed_audio = audio.strip_silence(silence_thresh=-40, padding=500)
+        print("Trimmed silence from audio file with silence threshold -40 dBFS and padding of 100 ms.")
 
         trimmed_audio.export(full_path, format="mp3")
         print("Saved trimmed audio file.")

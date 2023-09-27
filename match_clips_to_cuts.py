@@ -7,8 +7,10 @@ import subprocess
 def get_video_files(config):
     video_files_directory = os.path.abspath(config['source_video_files'])
     all_files = glob.glob(os.path.join(video_files_directory, '**', '*'), recursive=True)
+    print(f"get_video_files(): Found these FILES {all_files}")
     video_files = [f for f in all_files if f.lower().endswith(('.mp4', '.mov'))]
     video_files.sort()
+    print(f"get_video_files(): Found these VIDEOS {video_files}")
     return video_files
 
 def get_video_duration(video_path):

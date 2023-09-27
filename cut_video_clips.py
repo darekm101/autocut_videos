@@ -33,14 +33,15 @@ def cut_video_clips(config):
             print(f"Skipping {source_video} due to insufficient length")
             continue
 
+        # Get extension of source video
+        source_ext = os.path.splitext(source_video)[1]
+
         # ffmpeg command to cut video without transcodeing, but can cause jitter in video
-        output_file = os.path.join(temp_videos_directory, f"{os.path.basename(source_video)}-clip-{idx}.mp4")
+        output_file = os.path.join(temp_videos_directory, f"{os.path.basename(source_video)}-clip-{idx}.{source_ext}")
         clip['source_trimmed_video'] = output_file
         # command = ['ffmpeg', '-y', '-ss', '0', '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
         command = ['ffmpeg', '-y', '-ss', start_time, '-i', source_video, '-t', str(duration), '-c', 'copy', output_file]
-        # # Run ffmpeg command
-        # subprocess.run(command, check=True)
-
+   
         #Code from Claude
         try:
             subprocess.run(command, check=True)

@@ -1,9 +1,15 @@
 import os
 import subprocess
 
+
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 def combine_audio(config):
     print(f"________ MODULE: combine_audio.py ___________")
 
+    ensure_dir(config['source_audio_files'])
     source_audio_directory = os.path.abspath(config['source_audio_files'])
     temp_directory = os.path.abspath(config['temp_directory'])
     final_audio_name = config['final_movie_title'] + '.mp3'
